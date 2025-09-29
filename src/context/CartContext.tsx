@@ -35,7 +35,6 @@ export function CartProvider({ children }: CartProviderProps) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load cart from localStorage on mount
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem('cart');
@@ -50,7 +49,6 @@ export function CartProvider({ children }: CartProviderProps) {
     }
   }, []);
 
-  // Save cart to localStorage whenever items change (but not on initial load)
   useEffect(() => {
     if (isLoaded) {
       try {
@@ -64,7 +62,7 @@ export function CartProvider({ children }: CartProviderProps) {
   const addToCart = (product: Product) => {
     setItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
-      
+
       if (existingItem) {
         return prevItems.map(item =>
           item.id === product.id
@@ -72,7 +70,7 @@ export function CartProvider({ children }: CartProviderProps) {
             : item
         );
       }
-      
+
       return [...prevItems, { ...product, quantity: 1 }];
     });
   };
@@ -127,10 +125,10 @@ export function CartProvider({ children }: CartProviderProps) {
 
 export function useCart() {
   const context = useContext(CartContext);
-  
+
   if (context === undefined) {
     throw new Error('useCart must be used within a CartProvider');
   }
-  
+
   return context;
 }
