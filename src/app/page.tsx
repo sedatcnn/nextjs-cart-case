@@ -3,13 +3,20 @@
 import ProductCard from "@/components/ProductCard";
 import { products } from "@/data/products";
 import { useCart } from "@/context/CartContext";
+import { useToast } from "@/context/ToastContext";
+import { Product } from "@/context/CartContext";
 
 export default function Home() {
   const { addToCart } = useCart();
+  const { showToast } = useToast();
+
+  const handleAddToCart = (product: Product) => {
+    addToCart(product);
+    showToast(`${product.name} sepete eklendi!`, 'success');
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
@@ -25,9 +32,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Page Title */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             Ürünlerimiz
@@ -37,7 +42,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {products.map((product) => (
             <ProductCard
@@ -48,7 +52,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Empty State (if no products) */}
         {products.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">
